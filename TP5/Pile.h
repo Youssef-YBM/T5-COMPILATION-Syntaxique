@@ -9,7 +9,7 @@ typedef struct pile
 	struct pile* svt;
 }Pile;
 
-int empty(Pile);
+int empty(Pile*);
 void empiler(Pile**, char[8]);
 Pile* allocate(char[8]);
 void depiler(Pile**);

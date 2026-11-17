@@ -1,5 +1,5 @@
 #include "Pile.h"
-
+#include <stdlib.h>
 
 
 int empty(Pile* maPile)
