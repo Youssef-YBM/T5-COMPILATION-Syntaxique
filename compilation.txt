@@ -4,7 +4,7 @@ Depuis la racine du depot, compiler les deux versions :
 
     New-Item -ItemType Directory -Force build
     gcc -Wall -Wextra -std=c99 -o build\NTP5.exe NTP5\main.c NTP5\TP.c NTP5\Pile.c
-    gcc -std=c99 -o build\TP5.exe TP5\main.c TP5\TP.c TP5\Pile.c
+    gcc -std=c99 -o build\TP5_legacy.exe TP5\main.c TP5\TP.c TP5\Pile.c
 
 Les executables sont deja prepares dans build. Pour lancer la version recommandee :
 
@@ -12,6 +12,6 @@ Les executables sont deja prepares dans build. Pour lancer la version recommande
 
 Pour lancer l'ancienne version :
 
-    .\build\TP5.exe
+    .\build\TP5_legacy.exe
 
 NTP5 accepte une ligne vide pour quitter. Pour quitter TP5, utiliser Ctrl+C.
