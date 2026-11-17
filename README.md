@@ -42,13 +42,13 @@
 
 ## 1. Présentation du projet
 
-Ce dépôt contient le **TP5 du module de Compilation**: la réalisation d'un **analyseur syntaxique descendant LL(1)** piloté par une **table d'analyse** et une **pile**.
+Ce dépôt contient le **TP5 du module de Compilation** : la réalisation d'un **analyseur syntaxique descendant LL(1)** piloté par une **table d'analyse** et une **pile**.
 
-L'analyseur lit un **mot** (une chaîne de caractères), lui ajoute le marqueur de fin `$`, puis décide si ce mot appartient au langage engendré par la grammaire. À chaque étape, il affiche l'état complet de l'analyse sur trois colonnes: **PILE**, **Entrée**, **Sortie**.
+L'analyseur lit un **mot** (une chaîne de caractères), lui ajoute le marqueur de fin `$`, puis décide si ce mot appartient au langage engendré par la grammaire. À chaque étape, il affiche l'état complet de l'analyse sur trois colonnes : **PILE**, **Entrée**, **Sortie**.
 
 ### Le langage reconnu
 
-La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`**:
+La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`** :
 
 | Symbole | Rôle | Exemple | Priorité |
 |:-:|:--|:--|:-:|
@@ -59,8 +59,8 @@ La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`**:
 | `+` | union (alternative) | `a+b` | 4e (la plus faible) |
 
 > [!TIP]
-> **Mots acceptés**: `a`, `ab`, `a+b`, `a*`, `ab**`, `(a+b)*a`, `((a))`, `a(b+a)*b`
-> **Mots rejetés**: `+a`, `a+`, `()`, `(a`, `a)`, `*a`, `a+)`, `c`
+> **Mots acceptés** : `a`, `ab`, `a+b`, `a*`, `ab**`, `(a+b)*a`, `((a))`, `a(b+a)*b`
+> **Mots rejetés** : `+a`, `a+`, `()`, `(a`, `a)`, `*a`, `a+)`, `c`
 
 ### Contenu du dépôt
 
@@ -108,7 +108,7 @@ analyseur.exe
 </table>
 
 > [!NOTE]
-> La version `NTP5` compile **sans aucun avertissement** avec `-Wall -Wextra -std=c99`. Elle est portable: `system("CLS")` et `system("PAUSE")` ne sont utilisés que sous Windows (`#ifdef _WIN32`).
+> La version `NTP5` compile **sans aucun avertissement** avec `-Wall -Wextra -std=c99`. Elle est portable : `system("CLS")` et `system("PAUSE")` ne sont utilisés que sous Windows (`#ifdef _WIN32`).
 
 ### Utilisation
 
@@ -150,15 +150,15 @@ a+b* est connu
 ```
 
 > [!IMPORTANT]
-> **Comment lire la pile**: elle est affichée **du fond (à gauche) vers le sommet (à droite)**. Le symbole le plus à droite est donc celui que l'analyseur examine. Une ligne dont la colonne *Sortie* est vide correspond à la **consommation d'un terminal** (le sommet de pile coïncide avec le caractère courant).
+> **Comment lire la pile** : elle est affichée **du fond (à gauche) vers le sommet (à droite)**. Le symbole le plus à droite est donc celui que l'analyseur examine. Une ligne dont la colonne *Sortie* est vide correspond à la **consommation d'un terminal** (le sommet de pile coïncide avec le caractère courant).
 
 ---
 
 ## 3. Fondements théoriques
 
-### 3.1 Où se situe l'analyse syntaxique?
+### 3.1 Où se situe l'analyse syntaxique ?
 
-Un compilateur traite un programme source en plusieurs phases successives. L'analyse syntaxique est la **deuxième**:
+Un compilateur traite un programme source en plusieurs phases successives. L'analyse syntaxique est la **deuxième** :
 
 ```mermaid
 flowchart LR
@@ -173,26 +173,26 @@ flowchart LR
 
 | Phase | Question posée | Outil théorique |
 |:--|:--|:--|
-| Analyse **lexicale** | « Les *mots* sont-ils bien formés? » | Expressions régulières, automates finis |
-| Analyse **syntaxique** | « Les mots sont-ils *bien agencés*? » | **Grammaires hors-contexte**, automates à pile |
-| Analyse **sémantique** | « La phrase a-t-elle un *sens*? » | Types, portée, attributs |
+| Analyse **lexicale** | « Les *mots* sont-ils bien formés ? » | Expressions régulières, automates finis |
+| Analyse **syntaxique** | « Les mots sont-ils *bien agencés* ? » | **Grammaires hors-contexte**, automates à pile |
+| Analyse **sémantique** | « La phrase a-t-elle un *sens* ? » | Types, portée, attributs |
 
-> Dans ce TP, chaque caractère (`a`, `b`, `+`, `*`, `(`, `)`) joue directement le rôle d'une **unité lexicale** (*token*): il n'y a donc pas d'analyseur lexical séparé.
+> Dans ce TP, chaque caractère (`a`, `b`, `+`, `*`, `(`, `)`) joue directement le rôle d'une **unité lexicale** (*token*) : il n'y a donc pas d'analyseur lexical séparé.
 
 ### 3.2 Grammaire hors-contexte
 
-Une **grammaire hors-contexte** (ou algébrique, *context-free*) est un quadruplet **G = (V<sub>T</sub>, V<sub>N</sub>, S, P)**:
+Une **grammaire hors-contexte** (ou algébrique, *context-free*) est un quadruplet **G = (V<sub>T</sub>, V<sub>N</sub>, S, P)** :
 
 | Élément | Signification | Dans ce TP |
 |:-:|:--|:--|
-| **V<sub>T</sub>** | Terminaux: symboles du texte analysé | `a b + * ( )` |
-| **V<sub>N</sub>** | Non-terminaux: catégories syntaxiques | `R S T U` |
-| **S** | Axiome: symbole de départ | `R` |
+| **V<sub>T</sub>** | Terminaux : symboles du texte analysé | `a b + * ( )` |
+| **V<sub>N</sub>** | Non-terminaux : catégories syntaxiques | `R S T U` |
+| **S** | Axiome : symbole de départ | `R` |
 | **P** | Règles de production `A → α` | voir ci-dessous |
 
-On l'appelle *hors-contexte* parce que le membre gauche de chaque règle est **un seul non-terminal**: `A` peut être remplacé par `α` quel que soit son contexte.
+On l'appelle *hors-contexte* parce que le membre gauche de chaque règle est **un seul non-terminal** : `A` peut être remplacé par `α` quel que soit son contexte.
 
-** Grammaire de départ G** (expressions régulières):
+** Grammaire de départ G** (expressions régulières) :
 
 ```
 R → R + S  |  S          (union)
@@ -201,26 +201,26 @@ T → T *    |  U          (étoile)
 U → ( R )  |  a  |  b    (éléments de base)
 ```
 
-> **La hiérarchie encode la priorité**: plus un opérateur est *bas* dans la grammaire (proche de `U`), plus il est **prioritaire**. `*` (niveau `T`) l'emporte sur la concaténation (niveau `S`), qui l'emporte sur `+` (niveau `R`). Ainsi `a+bc*` se lit `a + (b(c*))`.
+> **La hiérarchie encode la priorité** : plus un opérateur est *bas* dans la grammaire (proche de `U`), plus il est **prioritaire**. `*` (niveau `T`) l'emporte sur la concaténation (niveau `S`), qui l'emporte sur `+` (niveau `R`). Ainsi `a+bc*` se lit `a + (b(c*))`.
 
 ### 3.3 Dérivations
 
 Une **dérivation** applique les règles, l'une après l'autre, pour passer de l'axiome à un mot.
 
 - **Dérivation la plus à gauche** : on remplace toujours le non-terminal **le plus à gauche**. C'est celle que construit un analyseur **descendant**, donc celui de ce TP.
-- **Dérivation la plus à droite**: on remplace toujours le non-terminal le plus à droite. Un analyseur **ascendant** (LR) construit l'inverse de cette dérivation.
+- **Dérivation la plus à droite** : on remplace toujours le non-terminal le plus à droite. Un analyseur **ascendant** (LR) construit l'inverse de cette dérivation.
 
-**Exemple**: dérivation la plus à gauche de `a+b` dans G:
+**Exemple** : dérivation la plus à gauche de `a+b` dans G :
 
 ```
 R ⇒ R + S ⇒ S + S ⇒ T + S ⇒ U + S ⇒ a + S ⇒ a + T ⇒ a + U ⇒ a + b
 ```
 
-Le **langage engendré** est L(G) = { w ∈ V<sub>T</sub>* | R ⇒* w }: l'ensemble des mots de terminaux qu'on peut dériver à partir de l'axiome.
+Le **langage engendré** est L(G) = { w ∈ V<sub>T</sub>* | R ⇒* w } : l'ensemble des mots de terminaux qu'on peut dériver à partir de l'axiome.
 
 ### 3.4 Arbre syntaxique
 
-L'**arbre syntaxique** (ou arbre de dérivation) représente la structure d'un mot, sans tenir compte de l'ordre d'application des règles. Voici l'arbre de `a+b*` dans la grammaire transformée **G'** (celle qu'utilise le programme):
+L'**arbre syntaxique** (ou arbre de dérivation) représente la structure d'un mot, sans tenir compte de l'ordre d'application des règles. Voici l'arbre de `a+b*` dans la grammaire transformée **G'** (celle qu'utilise le programme) :
 
 ```mermaid
 graph TD
@@ -252,17 +252,17 @@ graph TD
     style star fill:#FF6F61,color:#fff
 ```
 
-> Lues de gauche à droite, les **feuilles** de l'arbre (sans les ε) redonnent le mot: `a` `+` `b` `*`.
+> Lues de gauche à droite, les **feuilles** de l'arbre (sans les ε) redonnent le mot : `a` `+` `b` `*`.
 
 ### 3.5 Ambiguïté
 
-Une grammaire est **ambiguë** si un même mot possède **deux arbres syntaxiques différents**. Par exemple:
+Une grammaire est **ambiguë** si un même mot possède **deux arbres syntaxiques différents**. Par exemple :
 
 ```
 E → E + E  |  E E  |  E *  |  ( E )  |  a  |  b
 ```
 
-Avec cette grammaire, `a+ab` a deux arbres: `(a+a)b` et `a+(ab)`. **Aucune grammaire ambiguë n'est LL(1).** C'est pourquoi la grammaire G du TP est **stratifiée** (R, S, T, U): chaque niveau correspond à un niveau de priorité, ce qui supprime l'ambiguïté.
+Avec cette grammaire, `a+ab` a deux arbres : `(a+a)b` et `a+(ab)`. **Aucune grammaire ambiguë n'est LL(1).** C'est pourquoi la grammaire G du TP est **stratifiée** (R, S, T, U) : chaque niveau correspond à un niveau de priorité, ce qui supprime l'ambiguïté.
 
 ### 3.6 Analyse descendante ou ascendante
 
@@ -287,7 +287,7 @@ flowchart TB
 | Écriture à la main | facile | difficile (on utilise un générateur) |
 | Outils | ANTLR, descente récursive | Yacc, Bison |
 
-### 3.7 Que signifie « LL(1) »?
+### 3.7 Que signifie « LL(1) » ?
 
 <div align="center">
 
@@ -297,17 +297,17 @@ flowchart TB
 
 </div>
 
-Un analyseur LL(1) **ne revient jamais en arrière**: en regardant uniquement le non-terminal en sommet de pile et **le caractère courant**, il sait quelle règle appliquer. C'est le rôle de la **table d'analyse**.
+Un analyseur LL(1) **ne revient jamais en arrière** : en regardant uniquement le non-terminal en sommet de pile et **le caractère courant**, il sait quelle règle appliquer. C'est le rôle de la **table d'analyse**.
 
 ---
 
 ## 4. De la grammaire G à la grammaire LL(1) G'
 
-La grammaire G **n'est pas LL(1)**: elle est **récursive à gauche** (`R → R + S`, `S → S T`, `T → T *`).
+La grammaire G **n'est pas LL(1)** : elle est **récursive à gauche** (`R → R + S`, `S → S T`, `T → T *`).
 
 ### 4.1 Pourquoi la récursivité à gauche pose problème
 
-Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau sommet de pile est encore `R`, sans qu'aucun caractère ait été lu. On réapplique la même règle, et ainsi de suite: la **boucle est infinie**.
+Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau sommet de pile est encore `R`, sans qu'aucun caractère ait été lu. On réapplique la même règle, et ainsi de suite : la **boucle est infinie**.
 
 ### 4.2 Élimination de la récursivité gauche immédiate
 
@@ -321,15 +321,15 @@ Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau s
 > A → β A'
 > A' → α A' | ε
 > ```
-> Les deux grammaires engendrent le même langage: **β α α … α**.
+> Les deux grammaires engendrent le même langage : **β α α … α**.
 
 **Application aux trois règles récursives:**
 
 | Règle d'origine | A | α | β | Résultat |
 |:--|:-:|:-:|:-:|:--|
-| `R → R + S \| S` | R | `+ S` | `S` | `R → S R'` &nbsp; `R' → + S R' \| ε` |
-| `S → S T \| T` | S | `T` | `T` | `S → T S'` &nbsp; `S' → T S' \| ε` |
-| `T → T * \| U` | T | `*` | `U` | `T → U T'` &nbsp; `T' → * T' \| ε` |
+| `R → R + S \| S` | R | `+ S` | `S` | `R → S R'` &nbsp ; `R' → + S R' \| ε` |
+| `S → S T \| T` | S | `T` | `T` | `S → T S'` &nbsp ; `S' → T S' \| ε` |
+| `T → T * \| U` | T | `*` | `U` | `T → U T'` &nbsp ; `T' → * T' \| ε` |
 
 ### 4.3 Grammaire G' obtenue
 
@@ -343,11 +343,11 @@ Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau s
 | **5** | 6 | `S' → ε` | | **11** | 12 | `U → b` |
 
 > [!NOTE]
-> Dans le code, les règles sont **numérotées à partir de 0** (indices du tableau C `derivation`). Le cahier du TP les numérote à partir de 1: **n° code = n° cahier − 1**.
+> Dans le code, les règles sont **numérotées à partir de 0** (indices du tableau C `derivation`). Le cahier du TP les numérote à partir de 1 : **n° code = n° cahier − 1**.
 
-### 4.4 L'autre transformation: la factorisation à gauche
+### 4.4 L'autre transformation : la factorisation à gauche
 
-Ce TP n'en a pas besoin, mais elle est indispensable en général. Quand deux règles d'un même non-terminal commencent par le même préfixe, l'analyseur ne peut pas choisir entre elles avec un seul symbole:
+Ce TP n'en a pas besoin, mais elle est indispensable en général. Quand deux règles d'un même non-terminal commencent par le même préfixe, l'analyseur ne peut pas choisir entre elles avec un seul symbole :
 
 ```
 I → if C then I else I  |  if C then I
@@ -366,28 +366,28 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 
 ### 5.1 PREMIER(α) — *FIRST*
 
-> **Définition**: PREMIER(α) est l'ensemble des **terminaux par lesquels peut commencer** un mot dérivé de α. On y ajoute **ε** si α ⇒* ε.
+> **Définition** : PREMIER(α) est l'ensemble des **terminaux par lesquels peut commencer** un mot dérivé de α. On y ajoute **ε** si α ⇒* ε.
 
-** Algorithme** (à répéter jusqu'à ce que plus rien ne change):
+** Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
 
-1. Si `x` est un terminal: PREMIER(x) = { x }.
-2. Si `X → ε`: ajouter ε à PREMIER(X).
-3. Si `X → Y₁ Y₂ … Yₖ`:
-  - ajouter PREMIER(Y₁) \ {ε};
-  - si ε ∈ PREMIER(Y₁), ajouter aussi PREMIER(Y₂) \ {ε}, et ainsi de suite;
+1. Si `x` est un terminal : PREMIER(x) = { x }.
+2. Si `X → ε` : ajouter ε à PREMIER(X).
+3. Si `X → Y₁ Y₂ … Yₖ` :
+  - ajouter PREMIER(Y₁) \ {ε} ;
+  - si ε ∈ PREMIER(Y₁), ajouter aussi PREMIER(Y₂) \ {ε}, et ainsi de suite ;
   - si **tous** les Yᵢ peuvent produire ε, ajouter ε.
 
 ### 5.2 SUIVANT(A) — *FOLLOW*
 
-> **Définition**: SUIVANT(A) est l'ensemble des **terminaux qui peuvent apparaître immédiatement à droite** de A dans une dérivation à partir de l'axiome. `$` appartient à SUIVANT de l'axiome.
+> **Définition** : SUIVANT(A) est l'ensemble des **terminaux qui peuvent apparaître immédiatement à droite** de A dans une dérivation à partir de l'axiome. `$` appartient à SUIVANT de l'axiome.
 
-** Algorithme** (à répéter jusqu'à ce que plus rien ne change):
+** Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
 
 1. Ajouter `$` à SUIVANT(axiome).
-2. Pour toute règle `B → α A β`: ajouter PREMIER(β) \ {ε} à SUIVANT(A).
-3. Pour toute règle `B → α A`, ou `B → α A β` avec ε ∈ PREMIER(β): ajouter SUIVANT(B) à SUIVANT(A).
+2. Pour toute règle `B → α A β` : ajouter PREMIER(β) \ {ε} à SUIVANT(A).
+3. Pour toute règle `B → α A`, ou `B → α A β` avec ε ∈ PREMIER(β) : ajouter SUIVANT(B) à SUIVANT(A).
 
-> **Piège classique**: ε **n'appartient jamais** à un ensemble SUIVANT.
+> **Piège classique** : ε **n'appartient jamais** à un ensemble SUIVANT.
 
 ### 5.3 Calcul complet pour G'
 
@@ -415,13 +415,13 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 
 | Non-terminal | Raisonnement | SUIVANT |
 |:-:|:--|:-:|
-| `R` | axiome → `$`; dans `U → ( R )` → `)` | **{ $, ) }** |
+| `R` | axiome → `$` ; dans `U → ( R )` → `)` | **{ $, ) }** |
 | `R'` | `R → S R'` et `R' → + S R'` → SUIVANT(R) | **{ $, ) }** |
-| `S` | suivi de `R'` → PREMIER(R') \ {ε} = {+}; R' ⇒ ε → SUIVANT(R) ∪ SUIVANT(R') | **{ +, $, ) }** |
+| `S` | suivi de `R'` → PREMIER(R') \ {ε} = {+} ; R' ⇒ ε → SUIVANT(R) ∪ SUIVANT(R') | **{ +, $, ) }** |
 | `S'` | en fin de `S → T S'` → SUIVANT(S) | **{ +, $, ) }** |
-| `T` | suivi de `S'` → {(, a, b}; S' ⇒ ε → SUIVANT(S) ∪ SUIVANT(S') | **{ (, a, b, +, $, ) }** |
+| `T` | suivi de `S'` → {(, a, b} ; S' ⇒ ε → SUIVANT(S) ∪ SUIVANT(S') | **{ (, a, b, +, $, ) }** |
 | `T'` | en fin de `T → U T'` et `T' → * T'` → SUIVANT(T) | **{ (, a, b, +, $, ) }** |
-| `U` | suivi de `T'` → {*}; T' ⇒ ε → SUIVANT(T) | **{ *, (, a, b, +, $, ) }** |
+| `U` | suivi de `T'` → {*} ; T' ⇒ ε → SUIVANT(T) | **{ *, (, a, b, +, $, ) }** |
 
 </details>
 
@@ -438,10 +438,10 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 
 ### 6.1 Règles de remplissage
 
-Pour chaque règle **`A → α`** de la grammaire:
+Pour chaque règle **`A → α`** de la grammaire :
 
-1. pour chaque terminal **x ∈ PREMIER(α)**, placer la règle dans **M[A, x]**;
-2. si **ε ∈ PREMIER(α)**, placer la règle dans **M[A, y]** pour chaque **y ∈ SUIVANT(A)** (y compris `$`);
+1. pour chaque terminal **x ∈ PREMIER(α)**, placer la règle dans **M[A, x]** ;
+2. si **ε ∈ PREMIER(α)**, placer la règle dans **M[A, y]** pour chaque **y ∈ SUIVANT(A)** (y compris `$`) ;
 3. chaque case restée vide est une **erreur** (codée `-1` dans le programme).
 
 ### 6.2 Table M obtenue (n° de règle du code)
@@ -462,7 +462,7 @@ Pour chaque règle **`A → α`** de la grammaire:
 
 > **Légende** : **gras** = placé via PREMIER · *italique* = règle ε, placée via SUIVANT · — = erreur (`-1`)
 
-Cette table est exactement le tableau `table_analyse[7][8]` de `NTP5/TP.c`:
+Cette table est exactement le tableau `table_analyse[7][8]` de `NTP5/TP.c` :
 
 ```c
 /* Colonnes :  +   *   (   )   a   b   $  autre */
@@ -477,16 +477,16 @@ int table_analyse[7][8] = {
 };
 ```
 
-### 6.3 La grammaire G' est-elle LL(1)?
+### 6.3 La grammaire G' est-elle LL(1) ?
 
-> **Critère**: une grammaire est LL(1) **si et seulement si** sa table ne contient **aucune case avec deux règles** (aucun conflit).
+> **Critère** : une grammaire est LL(1) **si et seulement si** sa table ne contient **aucune case avec deux règles** (aucun conflit).
 
-De manière équivalente, pour chaque paire de règles `A → α | β`:
-- PREMIER(α) ∩ PREMIER(β) = ∅;
-- au plus une des deux dérive ε;
+De manière équivalente, pour chaque paire de règles `A → α | β` :
+- PREMIER(α) ∩ PREMIER(β) = ∅ ;
+- au plus une des deux dérive ε ;
 - si β ⇒* ε, alors PREMIER(α) ∩ SUIVANT(A) = ∅.
 
-**Vérification sur G'**:
+**Vérification sur G'** :
 
 | Paire | Test | Résultat |
 |:--|:--|:-:|
@@ -495,13 +495,13 @@ De manière équivalente, pour chaque paire de règles `A → α | β`:
 | `T' → *T' \| ε` | {*} ∩ {(, a, b, +, $, )} | ∅ |
 | `U → (R) \| a \| b` | {(}, {a}, {b} disjoints deux à deux | ∅ |
 
- **Aucun conflit: G' est LL(1).**
+ **Aucun conflit : G' est LL(1).**
 
 ---
 
 ## 7. L'algorithme d'analyse prédictive
 
-### 7.1 Le modèle: un automate à pile
+### 7.1 Le modèle : un automate à pile
 
 ```mermaid
 flowchart LR
@@ -511,11 +511,11 @@ flowchart LR
     P --> OUT[" Sortie<br/>suite des règles<br/>= dérivation gauche"]
 ```
 
-**Initialisation**: la pile contient `$` puis l'axiome `R` au sommet; l'entrée contient `mot$`.
+**Initialisation** : la pile contient `$` puis l'axiome `R` au sommet ; l'entrée contient `mot$`.
 
 ### 7.2 Les quatre cas possibles
 
-Soit **X** le sommet de pile et **x** le caractère courant:
+Soit **X** le sommet de pile et **x** le caractère courant :
 
 ```mermaid
 flowchart TD
@@ -563,12 +563,12 @@ fonction ANALYSE(mot$) :
 ```
 
 > [!IMPORTANT]
-> **Pourquoi empiler à l'envers?** Une pile est LIFO. Pour que **Y1**, le premier symbole de la partie droite, soit traité en premier, il doit se trouver **au sommet**. On empile donc Yk en premier et Y1 en dernier. C'est le rôle de la boucle `for (i = n - 1; i >= 0; i--)` dans `analyse_syntaxique()`.
+> **Pourquoi empiler à l'envers?** Une pile est LIFO. Pour que **Y1**, le premier symbole de la partie droite, soit traité en premier, il doit se trouver **au sommet**. On empile donc Yk en premier et Y1 en dernier. C'est le rôle de la boucle `for (i = n - 1 ; i >= 0 ; i--)` dans `analyse_syntaxique()`.
 
 ### 7.4 Complexité
 
-- **Temps**: O(n) pour un mot de longueur n. Chaque terminal est consommé une seule fois, et le nombre de développements entre deux consommations est borné par la grammaire.
-- **Espace**: O(n) pour la pile, dans le pire cas (parenthèses imbriquées).
+- **Temps** : O(n) pour un mot de longueur n. Chaque terminal est consommé une seule fois, et le nombre de développements entre deux consommations est borné par la grammaire.
+- **Espace** : O(n) pour la pile, dans le pire cas (parenthèses imbriquées).
 
 ---
 
@@ -576,7 +576,7 @@ fonction ANALYSE(mot$) :
 
 > Les traces ci-dessous ont été produites par le programme `NTP5`.
 
-### Exemple 1: `(a+b)*a`, un mot accepté
+### Exemple 1 : `(a+b)*a`, un mot accepté
 
 <details>
 <summary><b> Afficher la trace complète (33 étapes)</b></summary>
@@ -624,9 +624,9 @@ $                             $                             ACCEPTER(analyse syn
 </details>
 
 ** Moments clés:**
-- Avec `U` en sommet et `(` en entrée, M[U, (] = 9: `U → (R)`. On empile `)`, `R`, `(` (à l'envers).
-- Avec `R'` en sommet et `)` en entrée, M[R', )] = 2: `R' → ε`. La parenthèse fermante est dans SUIVANT(R'), donc l'union est terminée.
-- Avec `S'` en sommet et `a` en entrée, M[S', a] = 4: `S' → TS'`. C'est la **concaténation** de `(a+b)*` avec `a`.
+- Avec `U` en sommet et `(` en entrée, M[U, (] = 9 : `U → (R)`. On empile `)`, `R`, `(` (à l'envers).
+- Avec `R'` en sommet et `)` en entrée, M[R', )] = 2 : `R' → ε`. La parenthèse fermante est dans SUIVANT(R'), donc l'union est terminée.
+- Avec `S'` en sommet et `a` en entrée, M[S', a] = 4 : `S' → TS'`. C'est la **concaténation** de `(a+b)*` avec `a`.
 
 ### Exemple 2 : `a+)`, un mot rejeté par un non-terminal
 
@@ -637,7 +637,7 @@ $R'S                          )$                            ERREUR!!
 Mot inconnu : a+)
 ```
 
- **Diagnostic**: M[S, )] = −1. Après `+`, on attend le début d'un `S`, donc un symbole de PREMIER(S) = { (, a, b }. La parenthèse `)` n'en fait pas partie.
+ **Diagnostic** : M[S, )] = −1. Après `+`, on attend le début d'un `S`, donc un symbole de PREMIER(S) = { (, a, b }. La parenthèse `)` n'en fait pas partie.
 
 ### Exemple 3 : `()`, un mot rejeté avec des parenthèses vides
 
@@ -646,14 +646,14 @@ $R'S'T')R(                    ()$
 $R'S'T')R                     )$                            ERREUR!!
 ```
 
- **Diagnostic**: M[R, )] = −1. La grammaire **interdit l'expression vide**: `R` ne peut pas dériver ε.
+ **Diagnostic** : M[R, )] = −1. La grammaire **interdit l'expression vide** : `R` ne peut pas dériver ε.
 
 ### Tableau de tests
 
 | Mot | Résultat | Explication |
 |:--|:-:|:--|
 | `a` | Accepté | `U → a` |
-| `ab**` | Accepté | double étoile: `T' → *T'` appliquée deux fois |
+| `ab**` | Accepté | double étoile : `T' → *T'` appliquée deux fois |
 | `a+b*` | Accepté | union, puis étoile sur `b` |
 | `(a+b)*a` | Accepté | parenthèses, étoile, concaténation |
 | `((a))` | Accepté | imbrication de `U → (R)` |
@@ -709,7 +709,7 @@ typedef struct pile {
 
 ### 9.3 Le cœur de l'analyse (`TP.h` / `TP.c`)
 
-**Représentation des règles**. Chaque règle est stockée comme sa **partie droite**, sur 3 cases au plus. La sentinelle `"!"` marque les cases inutilisées:
+**Représentation des règles**. Chaque règle est stockée comme sa **partie droite**, sur 3 cases au plus. La sentinelle `"!"` marque les cases inutilisées :
 
 ```c
 char derivation[12][3][8] = {
@@ -725,18 +725,18 @@ char derivation[12][3][8] = {
 | Fonction | Rôle |
 |:--|:--|
 | `check_terminal(c)` | Indique si `c` est un terminal (`+ * ( ) a b $`) |
-| `get_indice_mot(c)` | Caractère → indice de colonne (0 à 7); 7 correspond à *autre* |
+| `get_indice_mot(c)` | Caractère → indice de colonne (0 à 7) ; 7 correspond à *autre* |
 | `get_indice_non_terminal(nt)` | `"R"`, `"R'"`, … → indice de ligne (0 à 6), −1 si inconnu |
-| `analyse_syntaxique(mot)` | Boucle pilote: affiche la trace, renvoie 1 (accepté) ou 0 (rejeté) |
+| `analyse_syntaxique(mot)` | Boucle pilote : affiche la trace, renvoie 1 (accepté) ou 0 (rejeté) |
 | `erreur(mot)` / `accepter()` | Affiche le message et renvoie 0 / 1 |
 
 > **Pourquoi des chaînes et pas des caractères?** Les non-terminaux `R'`, `S'` et `T'` s'écrivent avec **deux caractères**. Les symboles sont donc des chaînes, comparées avec `strcmp`.
 
 ---
 
-## 10. Évolution: de `TP5` à `NTP5`
+## 10. Évolution : de `TP5` à `NTP5`
 
-Le dossier `NTP5` est une **réécriture corrigée** de la version d'origine `TP5`. Les principales corrections:
+Le dossier `NTP5` est une **réécriture corrigée** de la version d'origine `TP5`. Les principales corrections :
 
 | # | Problème dans `TP5` | Conséquence | Correction dans `NTP5` |
 |:-:|:--|:--|:--|
@@ -753,18 +753,18 @@ Le dossier `NTP5` est une **réécriture corrigée** de la version d'origine `TP
 | 11 | Acceptation sur `$` sans vérifier la fin du mot | Fragile | Vérification de `ind == taille - 1` |
 
 > [!TIP]
-> **Conseil de dépôt**: ajoutez un `.gitignore` contenant `.vs/`, `*.exe`, `*.o`, `Debug/` et `Release/`. Les fichiers `.ipch`, `.suo` et `Browse.VC.db` sont des caches de Visual Studio, propres à chaque machine.
+> **Conseil de dépôt** : ajoutez un `.gitignore` contenant `.vs/`, `*.exe`, `*.o`, `Debug/` et `Release/`. Les fichiers `.ipch`, `.suo` et `Browse.VC.db` sont des caches de Visual Studio, propres à chaque machine.
 
 ---
 
 ## 11. Exercices corrigés
 
 <details>
-<summary><b> Exercice 1: éliminer la récursivité à gauche de <code>E → E + T | E − T | T</code></b></summary>
+<summary><b> Exercice 1 : éliminer la récursivité à gauche de <code>E → E + T | E − T | T</code></b></summary>
 
 <br/>
 
-Ici α₁ = `+ T`, α₂ = `− T`, β = `T`:
+Ici α₁ = `+ T`, α₂ = `− T`, β = `T` :
 
 ```
 E  → T E'
@@ -774,7 +774,7 @@ E' → + T E'  |  − T E'  |  ε
 </details>
 
 <details>
-<summary><b> Exercice 2: calculer PREMIER et SUIVANT pour la grammaire arithmétique classique</b></summary>
+<summary><b> Exercice 2 : calculer PREMIER et SUIVANT pour la grammaire arithmétique classique</b></summary>
 
 <br/>
 
@@ -792,24 +792,24 @@ F → ( E ) | id
 </details>
 
 <details>
-<summary><b> Exercice 3: cette grammaire est-elle LL(1)? <code>S → a S b | a b</code></b></summary>
+<summary><b> Exercice 3 : cette grammaire est-elle LL(1) ? <code>S → a S b | a b</code></b></summary>
 
 <br/>
 
- **Non**: PREMIER(aSb) ∩ PREMIER(ab) = {a}, donc M[S, a] contient deux règles.
- **Après factorisation à gauche**:
+ **Non** : PREMIER(aSb) ∩ PREMIER(ab) = {a}, donc M[S, a] contient deux règles.
+ **Après factorisation à gauche** :
 
 ```
 S  → a S'
 S' → S b  |  b
 ```
 
-PREMIER(Sb) = {a} et PREMIER(b) = {b} sont disjoints: la grammaire devient LL(1).
+PREMIER(Sb) = {a} et PREMIER(b) = {b} sont disjoints : la grammaire devient LL(1).
 
 </details>
 
 <details>
-<summary><b> Exercice 4: simuler l'analyse de <code>ba*</code> à la main</b></summary>
+<summary><b> Exercice 4 : simuler l'analyse de <code>ba*</code> à la main</b></summary>
 
 <br/>
 
@@ -832,28 +832,28 @@ PREMIER(Sb) = {a} et PREMIER(b) = {b} sont disjoints: la grammaire devient LL(1)
 | `$R'` | `$` | R' → ε |
 | `$` | `$` | ACCEPTER |
 
-L'étoile s'applique **seulement à `a`**: `b(a*)`.
+L'étoile s'applique **seulement à `a`** : `b(a*)`.
 
 </details>
 
 <details>
-<summary><b> Exercice 5: ajouter le mot vide <code>ε</code> (symbole <code>e</code>) au langage</b></summary>
+<summary><b> Exercice 5 : ajouter le mot vide <code>ε</code> (symbole <code>e</code>) au langage</b></summary>
 
 <br/>
 
-1. Ajouter la règle **12: `U → e`**, c'est-à-dire `{"e", "!", "!"}` dans `derivation` (`maxDeri_i` passe à 13).
+1. Ajouter la règle **12 : `U → e`**, c'est-à-dire `{"e", "!", "!"}` dans `derivation` (`maxDeri_i` passe à 13).
 2. Ajouter une colonne `e` à la table (`table_analyse[7][9]`) et le cas `'e'` dans `get_indice_mot`.
-3. Mettre à jour PREMIER: `e` apparaît partout où se trouvent `a` et `b`. Les cases de la colonne `e` reprennent donc les valeurs de la colonne `a`, sauf M[U, e] = 12.
+3. Mettre à jour PREMIER : `e` apparaît partout où se trouvent `a` et `b`. Les cases de la colonne `e` reprennent donc les valeurs de la colonne `a`, sauf M[U, e] = 12.
 4. Ajouter `'e'` à `check_terminal`.
 
 </details>
 
 <details>
-<summary><b> Exercice 6 (défi): remplacer la table par une descente récursive</b></summary>
+<summary><b> Exercice 6 (défi) : remplacer la table par une descente récursive</b></summary>
 
 <br/>
 
-Chaque non-terminal devient une fonction. La pile du programme est remplacée par la **pile d'appels** du langage C:
+Chaque non-terminal devient une fonction. La pile du programme est remplacée par la **pile d'appels** du langage C :
 
 ```c
 static const char* p;                 /* caractère courant */
@@ -872,7 +872,7 @@ static int R(void) { if (!S()) return 0; while (*p == '+') { p++; if (!S()) retu
 int reconnait(const char* mot) { p = mot; return R() && *p == '$'; }
 ```
 
- La boucle `while` de chaque fonction joue le rôle des règles en `X'`: c'est la récursivité terminale, écrite de façon itérative.
+ La boucle `while` de chaque fonction joue le rôle des règles en `X'` : c'est la récursivité terminale, écrite de façon itérative.
 
 </details>
 
@@ -882,9 +882,9 @@ int reconnait(const char* mot) { p = mot; return R() && *p == '$'; }
 
 ### Limites de la version actuelle
 
-- Pas de **récupération sur erreur**: l'analyse s'arrête à la première erreur.
-- Pas de **construction d'arbre**: le programme reconnaît le mot mais ne le représente pas en mémoire.
-- La table est **écrite à la main**: chaque modification de la grammaire oblige à la recalculer.
+- Pas de **récupération sur erreur** : l'analyse s'arrête à la première erreur.
+- Pas de **construction d'arbre** : le programme reconnaît le mot mais ne le représente pas en mémoire.
+- La table est **écrite à la main** : chaque modification de la grammaire oblige à la recalculer.
 
 ### Idées d'extensions
 
@@ -911,9 +911,9 @@ flowchart LR
 
 ### Pour approfondir
 
-- **Aho, Lam, Sethi, Ullman**: *Compilateurs: principes, techniques et outils* (le « Dragon Book »), chapitre 4.
-- **Grune & Jacobs**: *Parsing Techniques: A Practical Guide*.
-- L'énoncé du TP: `TP5_Analyse_SYntaxique.pdf`.
+- **Aho, Lam, Sethi, Ullman** : *Compilateurs : principes, techniques et outils* (le « Dragon Book »), chapitre 4.
+- **Grune & Jacobs** : *Parsing Techniques : A Practical Guide*.
+- L'énoncé du TP : `TP5_Analyse_SYntaxique.pdf`.
 
 ---
 
@@ -946,7 +946,7 @@ Le <code>$</code> est ajouté par <code>main.c</code> (<code>strcat(ss, "$")</co
 <details>
 <summary><b>Pourquoi certaines lignes n'ont-elles rien dans la colonne « Sortie »?</b></summary>
 <br/>
-Ce sont les étapes de <b>consommation</b>: le sommet de pile est un terminal égal au caractère courant. On le dépile et on avance dans l'entrée, sans appliquer de règle.
+Ce sont les étapes de <b>consommation</b> : le sommet de pile est un terminal égal au caractère courant. On le dépile et on avance dans l'entrée, sans appliquer de règle.
 </details>
 
 <details>
@@ -956,7 +956,7 @@ Ce sont les étapes de <b>consommation</b>: le sommet de pile est un terminal é
 </details>
 
 <details>
-<summary><b>Les deux règles 3 (<code>S → TS'</code>) et 4 (<code>S' → TS'</code>) ont la même partie droite: est-ce une erreur?</b></summary>
+<summary><b>Les deux règles 3 (<code>S → TS'</code>) et 4 (<code>S' → TS'</code>) ont la même partie droite : est-ce une erreur?</b></summary>
 <br/>
 Non. Leurs parties gauches sont différentes (<code>S</code> et <code>S'</code>). Comme le tableau <code>derivation</code> ne stocke que les parties droites, les deux lignes sont identiques. Le programme affiche la bonne partie gauche, car il la lit dans la pile.
 </details>
@@ -964,7 +964,7 @@ Non. Leurs parties gauches sont différentes (<code>S</code> et <code>S'</code>)
 <details>
 <summary><b>Le programme gère-t-il les mots très longs?</b></summary>
 <br/>
-Dans <code>NTP5</code>, la saisie est limitée à 98 caractères (<code>MAX_MOT</code>); les caractères suivants sont ignorés. L'alignement des colonnes est prévu pour des mots et des piles d'environ 30 caractères.
+Dans <code>NTP5</code>, la saisie est limitée à 98 caractères (<code>MAX_MOT</code>) ; les caractères suivants sont ignorés. L'alignement des colonnes est prévu pour des mots et des piles d'environ 30 caractères.
 </details>
 
 ---
@@ -977,7 +977,7 @@ Dans <code>NTP5</code>, la saisie est limitée à 98 caractères (<code>MAX_MOT<
 
 <br/>
 
-*Réalisé dans le cadre du module de **Compilation**: TP5, Analyse Syntaxique*
+*Réalisé dans le cadre du module de **Compilation** : TP5, Analyse Syntaxique*
 
 *Si ce dépôt vous a aidé à comprendre l'analyse LL(1), n'hésitez pas à lui donner une étoile !*
 
