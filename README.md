@@ -162,12 +162,12 @@ Un compilateur traite un programme source en plusieurs phases successives. L'ana
 
 ```mermaid
 flowchart LR
-    A[ Code source] --> B[ Analyse lexicale]
-    B -- unités lexicales --> C[ Analyse syntaxique]
-    C -- arbre syntaxique --> D[ Analyse sémantique]
-    D --> E[ Code intermédiaire]
-    E --> F[ Optimisation]
-    F --> G[ Code cible]
+    A[Code source] --> B[Analyse lexicale]
+    B -- unités lexicales --> C[Analyse syntaxique]
+    C -- arbre syntaxique --> D[Analyse sémantique]
+    D --> E[Code intermédiaire]
+    E --> F[Optimisation]
+    F --> G[Code cible]
     style C fill:#8A2BE2,color:#fff,stroke:#5a1a9a,stroke-width:3px
 ```
 
@@ -505,10 +505,10 @@ De manière équivalente, pour chaque paire de règles `A → α | β` :
 
 ```mermaid
 flowchart LR
-    IN[" Tampon d'entrée<br/><code>a + b * $</code><br/>▲ ind"] --> P{{" Programme<br/>pilote"}}
-    PILE[" Pile<br/>sommet ↑<br/>R<br/>$"] <--> P
-    TAB[" Table M[A, x]"] --> P
-    P --> OUT[" Sortie<br/>suite des règles<br/>= dérivation gauche"]
+    IN["Tampon d'entrée<br/><code>a + b * $</code><br/>indice courant"] --> P{{"Programme<br/>pilote"}}
+    PILE["Pile<br/>sommet<br/>R<br/>$"] <--> P
+    TAB["Table M[A, x]"] --> P
+    P --> OUT["Sortie<br/>suite des règles<br/>= dérivation gauche"]
 ```
 
 **Initialisation** : la pile contient `$` puis l'axiome `R` au sommet ; l'entrée contient `mot$`.
@@ -522,14 +522,14 @@ flowchart TD
     START([X = sommet, x = caractère courant]) --> Q1{X est un<br/>non-terminal ?}
     Q1 -- Oui --> Q2{"M[X, x] ≠ -1 ?"}
     Q2 -- Oui --> D["Dépiler X<br/>Empiler la partie droite<br/><b>à l'envers</b><br/>(rien si ε)"]
-    Q2 -- Non --> ERR1[ ERREUR]
+    Q2 -- Non --> ERR1[ERREUR]
     Q1 -- Non --> Q3{X = $ ?}
     Q3 -- Oui --> Q4{x = $ ?}
-    Q4 -- Oui --> ACC[ ACCEPTER]
-    Q4 -- Non --> ERR2[ ERREUR]
+    Q4 -- Oui --> ACC[ACCEPTER]
+    Q4 -- Non --> ERR2[ERREUR]
     Q3 -- Non --> Q5{X = x ?}
     Q5 -- Oui --> M["Dépiler X<br/>Avancer : ind++"]
-    Q5 -- Non --> ERR3[ ERREUR]
+    Q5 -- Non --> ERR3[ERREUR]
     D --> START
     M --> START
     style ACC fill:#2E8B57,color:#fff
@@ -672,10 +672,10 @@ $R'S'T')R                     )$                            ERREUR!!
 
 ```mermaid
 flowchart TB
-    main[" main.c<br/>saisie du mot, ajout de $, boucle"] --> TPh[" TP.h"]
-    TPc[" TP.c<br/>table_analyse, derivation<br/>analyse_syntaxique()"] --> TPh
-    TPh --> Pileh[" Pile.h<br/>struct Pile, TAILLE_SYMBOLE"]
-    Pilec[" Pile.c<br/>empiler, depiler, print, liberer"] --> Pileh
+    main["main.c<br/>saisie du mot, ajout de $, boucle"] --> TPh["TP.h"]
+    TPc["TP.c<br/>table_analyse, derivation<br/>analyse_syntaxique()"] --> TPh
+    TPh --> Pileh["Pile.h<br/>struct Pile, TAILLE_SYMBOLE"]
+    Pilec["Pile.c<br/>empiler, depiler, print, liberer"] --> Pileh
 ```
 
 ### 9.2 La pile chaînée (`Pile.h` / `Pile.c`)
