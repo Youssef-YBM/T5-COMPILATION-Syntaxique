@@ -58,7 +58,7 @@ La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`** :
 | *(juxtaposition)* | concaténation | `ab` | 3e |
 | `+` | union (alternative) | `a+b` | 4e (la plus faible) |
 
-> [!TIP]
+> **Exemples de validation**
 > **Mots acceptés** : `a`, `ab`, `a+b`, `a*`, `ab**`, `(a+b)*a`, `((a))`, `a(b+a)*b`
 > **Mots rejetés** : `+a`, `a+`, `()`, `(a`, `a)`, `*a`, `a+)`, `c`
 
@@ -107,7 +107,7 @@ analyseur.exe
 </td></tr>
 </table>
 
-> [!NOTE]
+> **Note**
 > La version `NTP5` compile **sans aucun avertissement** avec `-Wall -Wextra -std=c99`. Elle est portable : `system("CLS")` et `system("PAUSE")` ne sont utilisés que sous Windows (`#ifdef _WIN32`).
 
 ### Utilisation
@@ -149,7 +149,7 @@ $                             $                             ACCEPTER(analyse syn
 a+b* est connu
 ```
 
-> [!IMPORTANT]
+> **À retenir**
 > **Comment lire la pile** : elle est affichée **du fond (à gauche) vers le sommet (à droite)**. Le symbole le plus à droite est donc celui que l'analyseur examine. Une ligne dont la colonne *Sortie* est vide correspond à la **consommation d'un terminal** (le sommet de pile coïncide avec le caractère courant).
 
 ---
@@ -311,7 +311,7 @@ Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau s
 
 ### 4.2 Élimination de la récursivité gauche immédiate
 
-> ** Règle de transformation**
+> **Règle de transformation**
 >
 > ```
 > A → A α | β (β ne commence pas par A)
@@ -342,7 +342,7 @@ Supposons qu'on doive développer `R` avec la règle `R → R + S`. Le nouveau s
 | **4** | 5 | `S' → T S'` | | **10** | 11 | `U → a` |
 | **5** | 6 | `S' → ε` | | **11** | 12 | `U → b` |
 
-> [!NOTE]
+> **Note**
 > Dans le code, les règles sont **numérotées à partir de 0** (indices du tableau C `derivation`). Le cahier du TP les numérote à partir de 1 : **n° code = n° cahier − 1**.
 
 ### 4.4 L'autre transformation : la factorisation à gauche
@@ -562,8 +562,7 @@ fonction ANALYSE(mot$) :
             retourner ERREUR
 ```
 
-> [!IMPORTANT]
-> **Pourquoi empiler à l'envers?** Une pile est LIFO. Pour que **Y1**, le premier symbole de la partie droite, soit traité en premier, il doit se trouver **au sommet**. On empile donc Yk en premier et Y1 en dernier. C'est le rôle de la boucle `for (i = n - 1 ; i >= 0 ; i--)` dans `analyse_syntaxique()`.
+> **Pourquoi empiler à l'envers ?** Une pile est LIFO. Pour que **Y1**, le premier symbole de la partie droite, soit traité en premier, il doit se trouver **au sommet**. On empile donc Yk en premier et Y1 en dernier. C'est le rôle de la boucle `for (i = n - 1 ; i >= 0 ; i--)` dans `analyse_syntaxique()`.
 
 ### 7.4 Complexité
 
@@ -730,7 +729,7 @@ char derivation[12][3][8] = {
 | `analyse_syntaxique(mot)` | Boucle pilote : affiche la trace, renvoie 1 (accepté) ou 0 (rejeté) |
 | `erreur(mot)` / `accepter()` | Affiche le message et renvoie 0 / 1 |
 
-> **Pourquoi des chaînes et pas des caractères?** Les non-terminaux `R'`, `S'` et `T'` s'écrivent avec **deux caractères**. Les symboles sont donc des chaînes, comparées avec `strcmp`.
+> **Pourquoi des chaînes et pas des caractères ?** Les non-terminaux `R'`, `S'` et `T'` s'écrivent avec **deux caractères**. Les symboles sont donc des chaînes, comparées avec `strcmp`.
 
 ---
 
@@ -752,7 +751,6 @@ Le dossier `NTP5` est une **réécriture corrigée** de la version d'origine `TP
 | 10 | `system("CLS")` / `system("PAUSE")` | Fonctionne uniquement sous Windows | Macros `CLEAR()` / `PAUSE()` portables |
 | 11 | Acceptation sur `$` sans vérifier la fin du mot | Fragile | Vérification de `ind == taille - 1` |
 
-> [!TIP]
 > **Conseil de dépôt** : ajoutez un `.gitignore` contenant `.vs/`, `*.exe`, `*.o`, `Debug/` et `Release/`. Les fichiers `.ipch`, `.suo` et `Browse.VC.db` sont des caches de Visual Studio, propres à chaque machine.
 
 ---
@@ -912,7 +910,7 @@ flowchart LR
 ### Pour approfondir
 
 - **Aho, Lam, Sethi, Ullman** : *Compilateurs : principes, techniques et outils* (le « Dragon Book »), chapitre 4.
-- **Grune & Jacobs** : *Parsing Techniques : A Practical Guide*.
+- **Grune & Jacobs** : *Parsing Techniques: A Practical Guide*.
 - L'énoncé du TP : `TP5_Analyse_SYntaxique.pdf`.
 
 ---
@@ -944,7 +942,7 @@ Le <code>$</code> est ajouté par <code>main.c</code> (<code>strcat(ss, "$")</co
 </details>
 
 <details>
-<summary><b>Pourquoi certaines lignes n'ont-elles rien dans la colonne « Sortie »?</b></summary>
+<summary><b>Pourquoi certaines lignes n'ont-elles rien dans la colonne « Sortie » ?</b></summary>
 <br/>
 Ce sont les étapes de <b>consommation</b> : le sommet de pile est un terminal égal au caractère courant. On le dépile et on avance dans l'entrée, sans appliquer de règle.
 </details>
