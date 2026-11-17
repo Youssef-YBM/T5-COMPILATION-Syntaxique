@@ -8,16 +8,12 @@
 
 <br/>
 
-![Langage](https://img.shields.io/badge/langage-C99-00599C?style=for-the-badge&logo=c&logoColor=white)
-![Méthode](https://img.shields.io/badge/méthode-LL(1)-8A2BE2?style=for-the-badge)
-![Type](https://img.shields.io/badge/analyse-descendante-FF6F61?style=for-the-badge)
-![Cours](https://img.shields.io/badge/cours-Compilation-2E8B57?style=for-the-badge)
-![Plateforme](https://img.shields.io/badge/plateforme-Windows%20%7C%20Linux%20%7C%20macOS-555?style=for-the-badge)
+**Langage : C99** | **Méthode : LL(1)** | **Type : analyse descendante** | **Cours : Compilation** | **Plateformes : Windows, Linux et macOS**
 
 <br/>
 
 ```
-   Mot  ──▶  [ Pile  +  Table LL(1) ]  ──▶  ✅ ACCEPTER   |   ❌ ERREUR
+   Mot  ──▶  [ Pile  +  Table LL(1) ]  ──▶  ACCEPTER   |   ERREUR
 ```
 
 </div>
