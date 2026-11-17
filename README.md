@@ -8,12 +8,12 @@
 
 <br/>
 
-**Langage: C99** | **Méthode: LL(1)** | **Type: analyse descendante** | **Cours: Compilation** | **Plateformes: Windows, Linux et macOS**
+**Langage : C99** | **Méthode : LL(1)** | **Type : analyse descendante** | **Cours : Compilation** | **Plateformes : Windows, Linux et macOS**
 
 <br/>
 
 ```
-   Mot  ──▶  [ Pile  +  Table LL(1) ]  ──▶  ACCEPTER   |   ERREUR
+   Mot → [ Pile + Table LL(1) ] → ACCEPTER | ERREUR
 ```
 
 </div>
@@ -24,19 +24,19 @@
 
 | # | Partie | Contenu |
 |:-:|:--|:--|
-| 1 | [ Présentation](#-1-présentation-du-projet) | Objectif, langage reconnu, aperçu |
-| 2 | [ Démarrage rapide](#-2-démarrage-rapide) | Compilation, exécution, exemples |
-| 3 | [ Théorie](#-3-fondements-théoriques) | Grammaires, dérivations, arbres, ambiguïté |
-| 4 | [ Transformer la grammaire](#-4-de-la-grammaire-g-à-la-grammaire-ll1-g) | Récursivité à gauche, factorisation |
-| 5 | [ PREMIER & SUIVANT](#-5-les-ensembles-premier-et-suivant) | Algorithmes et calcul complet |
-| 6 | [ Table d'analyse](#-6-construction-de-la-table-danalyse-ll1) | Construction, conflits, condition LL(1) |
-| 7 | [ Algorithme pilote](#-7-lalgorithme-danalyse-prédictive) | Automate à pile, pseudo-code |
-| 8 | [ Traces d'exécution](#-8-traces-dexécution-commentées) | Mots acceptés et rejetés, pas à pas |
-| 9 | [ Architecture du code](#-9-architecture-du-code) | Fichiers, structures, fonctions |
-| 10 | [ TP5 → NTP5](#-10-évolution--de-tp5-à-ntp5) | Bugs corrigés et améliorations |
-| 11 | [ Exercices corrigés](#-11-exercices-corrigés) | Pour s'entraîner et maîtriser |
-| 12 | [ Aller plus loin](#-12-aller-plus-loin) | Limites, extensions, LL vs LR |
-| 13 | [ Glossaire & FAQ](#-13-glossaire) | Vocabulaire et questions fréquentes |
+| 1 | [Présentation](#1-présentation-du-projet) | Objectif, langage reconnu, aperçu |
+| 2 | [Démarrage rapide](#2-démarrage-rapide) | Compilation, exécution, exemples |
+| 3 | [Théorie](#3-fondements-théoriques) | Grammaires, dérivations, arbres, ambiguïté |
+| 4 | [Transformer la grammaire](#4-de-la-grammaire-g-à-la-grammaire-ll1-g) | Récursivité à gauche, factorisation |
+| 5 | [PREMIER & SUIVANT](#5-les-ensembles-premier-et-suivant) | Algorithmes et calcul complet |
+| 6 | [Table d'analyse](#6-construction-de-la-table-danalyse-ll1) | Construction, conflits, condition LL(1) |
+| 7 | [Algorithme pilote](#7-lalgorithme-danalyse-prédictive) | Automate à pile, pseudo-code |
+| 8 | [Traces d'exécution](#8-traces-dexécution-commentées) | Mots acceptés et rejetés, pas à pas |
+| 9 | [Architecture du code](#9-architecture-du-code) | Fichiers, structures, fonctions |
+| 10 | [TP5 → NTP5](#10-évolution--de-tp5-à-ntp5) | Bugs corrigés et améliorations |
+| 11 | [Exercices corrigés](#11-exercices-corrigés) | Pour s'entraîner et maîtriser |
+| 12 | [Aller plus loin](#12-aller-plus-loin) | Limites, extensions, LL vs LR |
+| 13 | [Glossaire & FAQ](#13-glossaire) | Vocabulaire et questions fréquentes |
 
 ---
 
@@ -53,10 +53,10 @@ La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`**:
 | Symbole | Rôle | Exemple | Priorité |
 |:-:|:--|:--|:-:|
 | `a`, `b` | lettres de l'alphabet | `a` | — |
-| `( … )` | parenthésage | `(a+b)` | la plus forte |
-| `*` | étoile de Kleene (postfixe) | `a*` | |
-| *(juxtaposition)* | concaténation | `ab` | |
-| `+` | union (alternative) | `a+b` | 4 la plus faible |
+| `( … )` | parenthésage | `(a+b)` | 1re (la plus forte) |
+| `*` | étoile de Kleene (postfixe) | `a*` | 2e |
+| *(juxtaposition)* | concaténation | `ab` | 3e |
+| `+` | union (alternative) | `a+b` | 4e (la plus faible) |
 
 > [!TIP]
 > **Mots acceptés**: `a`, `ab`, `a+b`, `a*`, `ab**`, `(a+b)*a`, `((a))`, `a(b+a)*b`
@@ -65,14 +65,14 @@ La grammaire décrit les **expressions régulières sur l'alphabet `{a, b}`**:
 ### Contenu du dépôt
 
 ```text
- TP5-Analyse-Syntaxique
- ┣  NTP5/                        ⭐ Version corrigée et recommandée
- ┃ ┣  main.c                     Boucle de saisie et lancement de l'analyse
- ┃ ┣  TP.c / TP.h                Table LL(1), règles, algorithme d'analyse
- ┃ ┗  Pile.c / Pile.h            Pile chaînée de symboles
- ┣  TP5/                         Version d'origine (conservée pour comparaison)
- ┣  .vs/                         Fichiers Visual Studio (à ignorer)
- ┗  TP5_Analyse_SYntaxique.pdf   Énoncé / cahier du TP
+TP5-Analyse-Syntaxique/
+|-- NTP5/ (version corrigée et recommandée)
+|   |-- main.c (saisie et lancement de l'analyse)
+|   |-- TP.c / TP.h (table LL(1), règles et analyse)
+|   `-- Pile.c / Pile.h (pile chaînée de symboles)
+|-- TP5/ (version d'origine, conservée pour comparaison)
+|-- .vs/ (fichiers Visual Studio à ignorer)
+`-- TP5_Analyse_SYntaxique.pdf (énoncé du TP)
 ```
 
 ---
@@ -110,7 +110,7 @@ analyseur.exe
 > [!NOTE]
 > La version `NTP5` compile **sans aucun avertissement** avec `-Wall -Wextra -std=c99`. Elle est portable: `system("CLS")` et `system("PAUSE")` ne sont utilisés que sous Windows (`#ifdef _WIN32`).
 
-### ▶ Utilisation
+### Utilisation
 
 ```text
 Donner le mot (vide pour quitter) : a+b*
@@ -207,7 +207,7 @@ U → ( R )  |  a  |  b    (éléments de base)
 
 Une **dérivation** applique les règles, l'une après l'autre, pour passer de l'axiome à un mot.
 
-- **Dérivation la plus à gauche**: on remplace toujours le non-terminal **le plus à gauche**. ⬅ C'est celle que construit un analyseur **descendant**, donc celui de ce TP.
+- **Dérivation la plus à gauche** : on remplace toujours le non-terminal **le plus à gauche**. C'est celle que construit un analyseur **descendant**, donc celui de ce TP.
 - **Dérivation la plus à droite**: on remplace toujours le non-terminal le plus à droite. Un analyseur **ascendant** (LR) construit l'inverse de cette dérivation.
 
 **Exemple**: dérivation la plus à gauche de `a+b` dans G:
@@ -268,11 +268,11 @@ Avec cette grammaire, `a+ab` a deux arbres: `(a+a)b` et `a+(ab)`. **Aucune gramm
 
 ```mermaid
 flowchart TB
-    subgraph D["⬇ DESCENDANTE (LL) — ce TP"]
+    subgraph D["DESCENDANTE (LL) — ce TP"]
         direction TB
         d1["Part de l'axiome R"] --> d2["Prédit la règle à appliquer"] --> d3["Arrive aux feuilles (le mot)"]
     end
-    subgraph A["⬆ ASCENDANTE (LR)"]
+    subgraph A["ASCENDANTE (LR)"]
         direction BT
         a3["Part du mot"] --> a2["Réduit des sous-chaînes"] --> a1["Remonte jusqu'à l'axiome"]
     end
@@ -450,17 +450,17 @@ Pour chaque règle **`A → α`** de la grammaire:
 
 | **M** | `+` | `*` | `(` | `)` | `a` | `b` | `$` | *autre* |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| **R** | | | **0** | | **0** | **0** | | |
-| **R'** | **1** | | | *2* | | | *2* | |
-| **S** | | | **3** | | **3** | **3** | | |
-| **S'** | *5* | | **4** | *5* | **4** | **4** | *5* | |
-| **T** | | | **6** | | **6** | **6** | | |
-| **T'** | *8* | **7** | *8* | *8* | *8* | *8* | *8* | |
-| **U** | | | **9** | | **10** | **11** | | |
+| **R** | — | — | **0** | — | **0** | **0** | — | — |
+| **R'** | **1** | — | — | *2* | — | — | *2* | — |
+| **S** | — | — | **3** | — | **3** | **3** | — | — |
+| **S'** | *5* | — | **4** | *5* | **4** | **4** | *5* | — |
+| **T** | — | — | **6** | — | **6** | **6** | — | — |
+| **T'** | *8* | **7** | *8* | *8* | *8* | *8* | *8* | — |
+| **U** | — | — | **9** | — | **10** | **11** | — | — |
 
 </div>
 
-> **Légende**: **gras** = placé via PREMIER · *italique* = règle ε, placée via SUIVANT · = erreur (`-1`)
+> **Légende** : **gras** = placé via PREMIER · *italique* = règle ε, placée via SUIVANT · — = erreur (`-1`)
 
 Cette table est exactement le tableau `table_analyse[7][8]` de `NTP5/TP.c`:
 
@@ -565,7 +565,7 @@ fonction ANALYSE(mot$) :
 > [!IMPORTANT]
 > **Pourquoi empiler à l'envers?** Une pile est LIFO. Pour que **Y1**, le premier symbole de la partie droite, soit traité en premier, il doit se trouver **au sommet**. On empile donc Yk en premier et Y1 en dernier. C'est le rôle de la boucle `for (i = n - 1; i >= 0; i--)` dans `analyse_syntaxique()`.
 
-### 7.4 ⏱ Complexité
+### 7.4 Complexité
 
 - **Temps**: O(n) pour un mot de longueur n. Chaque terminal est consommé une seule fois, et le nombre de développements entre deux consommations est borné par la grammaire.
 - **Espace**: O(n) pour la pile, dans le pire cas (parenthèses imbriquées).
@@ -628,7 +628,7 @@ $                             $                             ACCEPTER(analyse syn
 - Avec `R'` en sommet et `)` en entrée, M[R', )] = 2: `R' → ε`. La parenthèse fermante est dans SUIVANT(R'), donc l'union est terminée.
 - Avec `S'` en sommet et `a` en entrée, M[S', a] = 4: `S' → TS'`. C'est la **concaténation** de `(a+b)*` avec `a`.
 
-### Exemple 2: `a+)`, une erreur sur un non-terminal
+### Exemple 2 : `a+)`, un mot rejeté par un non-terminal
 
 ```text
 $R'S+                         +)$
@@ -639,7 +639,7 @@ Mot inconnu : a+)
 
  **Diagnostic**: M[S, )] = −1. Après `+`, on attend le début d'un `S`, donc un symbole de PREMIER(S) = { (, a, b }. La parenthèse `)` n'en fait pas partie.
 
-### Exemple 3: `()`, des parenthèses vides
+### Exemple 3 : `()`, un mot rejeté avec des parenthèses vides
 
 ```text
 $R'S'T')R(                    ()$
@@ -652,17 +652,17 @@ $R'S'T')R                     )$                            ERREUR!!
 
 | Mot | Résultat | Explication |
 |:--|:-:|:--|
-| `a` | | `U → a` |
-| `ab**` | | double étoile: `T' → *T'` appliquée deux fois |
-| `a+b*` | | union, puis étoile sur `b` |
-| `(a+b)*a` | | parenthèses, étoile, concaténation |
-| `((a))` | | imbrication de `U → (R)` |
-| `a+)` | | `)` ∉ PREMIER(S) |
-| `()` | | `R` ne dérive pas ε |
-| `+a` | | M[R, +] = −1 |
-| `a+` | | M[S, $] = −1 |
-| `(a` | | `$` rencontré alors que `)` est attendu |
-| `c` | | caractère hors alphabet (colonne *autre*) |
+| `a` | Accepté | `U → a` |
+| `ab**` | Accepté | double étoile: `T' → *T'` appliquée deux fois |
+| `a+b*` | Accepté | union, puis étoile sur `b` |
+| `(a+b)*a` | Accepté | parenthèses, étoile, concaténation |
+| `((a))` | Accepté | imbrication de `U → (R)` |
+| `a+)` | Rejeté | `)` ∉ PREMIER(S) |
+| `()` | Rejeté | `R` ne dérive pas ε |
+| `+a` | Rejeté | M[R, +] = −1 |
+| `a+` | Rejeté | M[S, $] = −1 |
+| `(a` | Rejeté | `$` rencontré alors que `)` est attendu |
+| `c` | Rejeté | caractère hors alphabet (colonne *autre*) |
 
 ---
 
@@ -694,7 +694,7 @@ typedef struct pile {
      │
      ▼
  ┌───────┐    ┌───────┐    ┌───────┐
- │  "S"  │───▶│ "R'"  │───▶│  "$"  │───▶ NULL
+ │  "S"  │───→│ "R'"  │───→│  "$"  │───→ NULL
  └───────┘    └───────┘    └───────┘
 ```
 
@@ -890,11 +890,11 @@ int reconnait(const char* mot) { p = mot; return R() && *p == '$'; }
 
 | Niveau | Idée |
 |:-:|:--|
-| ⭐ | Indiquer la **position** et les **symboles attendus** en cas d'erreur (par exemple « attendu: ( a b ») |
-| ⭐⭐ | **Mode panique**: en cas d'erreur, ignorer des caractères jusqu'à trouver un symbole de SUIVANT, puis reprendre |
-| ⭐⭐ | Construire l'**arbre syntaxique** et l'exporter au format Graphviz (`.dot`) |
-| ⭐⭐⭐ | **Générer la table automatiquement** à partir d'un fichier de grammaire (calcul de PREMIER, SUIVANT et M) |
-| ⭐⭐⭐ | Compiler l'expression régulière reconnue en **automate de Thompson** (lien avec l'analyse lexicale) |
+| Niveau 1 | Indiquer la **position** et les **symboles attendus** en cas d'erreur (par exemple « attendu : ( a b ») |
+| Niveau 2 | **Mode panique** : en cas d'erreur, ignorer des caractères jusqu'à trouver un symbole de SUIVANT, puis reprendre |
+| Niveau 2 | Construire l'**arbre syntaxique** et l'exporter au format Graphviz (`.dot`) |
+| Niveau 3 | **Générer la table automatiquement** à partir d'un fichier de grammaire (calcul de PREMIER, SUIVANT et M) |
+| Niveau 3 | Compiler l'expression régulière reconnue en **automate de Thompson** (lien avec l'analyse lexicale) |
 
 ### La hiérarchie des grammaires
 
@@ -979,6 +979,6 @@ Dans <code>NTP5</code>, la saisie est limitée à 98 caractères (<code>MAX_MOT<
 
 *Réalisé dans le cadre du module de **Compilation**: TP5, Analyse Syntaxique*
 
-⭐ *Si ce dépôt vous a aidé à comprendre l'analyse LL(1), n'hésitez pas à lui donner une étoile!*
+*Si ce dépôt vous a aidé à comprendre l'analyse LL(1), n'hésitez pas à lui donner une étoile !*
 
 </div>
