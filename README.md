@@ -192,7 +192,7 @@ Une **grammaire hors-contexte** (ou algébrique, *context-free*) est un quadrupl
 
 On l'appelle *hors-contexte* parce que le membre gauche de chaque règle est **un seul non-terminal** : `A` peut être remplacé par `α` quel que soit son contexte.
 
-** Grammaire de départ G** (expressions régulières) :
+**Grammaire de départ G** (expressions régulières) :
 
 ```
 R → R + S  |  S          (union)
@@ -368,7 +368,7 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 
 > **Définition** : PREMIER(α) est l'ensemble des **terminaux par lesquels peut commencer** un mot dérivé de α. On y ajoute **ε** si α ⇒* ε.
 
-** Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
+**Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
 
 1. Si `x` est un terminal : PREMIER(x) = { x }.
 2. Si `X → ε` : ajouter ε à PREMIER(X).
@@ -381,7 +381,7 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 
 > **Définition** : SUIVANT(A) est l'ensemble des **terminaux qui peuvent apparaître immédiatement à droite** de A dans une dérivation à partir de l'axiome. `$` appartient à SUIVANT de l'axiome.
 
-** Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
+**Algorithme** (à répéter jusqu'à ce que plus rien ne change) :
 
 1. Ajouter `$` à SUIVANT(axiome).
 2. Pour toute règle `B → α A β` : ajouter PREMIER(β) \ {ε} à SUIVANT(A).
@@ -392,7 +392,7 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 ### 5.3 Calcul complet pour G'
 
 <details open>
-<summary><b> Calcul détaillé de PREMIER</b></summary>
+<summary><b>Calcul détaillé de PREMIER</b></summary>
 
 <br/>
 
@@ -409,7 +409,7 @@ Ces deux ensembles sont **la clé** de la construction de la table.
 </details>
 
 <details open>
-<summary><b> Calcul détaillé de SUIVANT</b></summary>
+<summary><b>Calcul détaillé de SUIVANT</b></summary>
 
 <br/>
 
@@ -495,7 +495,7 @@ De manière équivalente, pour chaque paire de règles `A → α | β` :
 | `T' → *T' \| ε` | {*} ∩ {(, a, b, +, $, )} | ∅ |
 | `U → (R) \| a \| b` | {(}, {a}, {b} disjoints deux à deux | ∅ |
 
- **Aucun conflit : G' est LL(1).**
+**Aucun conflit : G' est LL(1).**
 
 ---
 
@@ -579,7 +579,7 @@ fonction ANALYSE(mot$) :
 ### Exemple 1 : `(a+b)*a`, un mot accepté
 
 <details>
-<summary><b> Afficher la trace complète (33 étapes)</b></summary>
+<summary><b>Afficher la trace complète (33 étapes)</b></summary>
 
 ```text
 PILE                          Entree                        Sortie
@@ -623,7 +623,7 @@ $                             $                             ACCEPTER(analyse syn
 
 </details>
 
-** Moments clés:**
+**Moments clés :**
 - Avec `U` en sommet et `(` en entrée, M[U, (] = 9 : `U → (R)`. On empile `)`, `R`, `(` (à l'envers).
 - Avec `R'` en sommet et `)` en entrée, M[R', )] = 2 : `R' → ε`. La parenthèse fermante est dans SUIVANT(R'), donc l'union est terminée.
 - Avec `S'` en sommet et `a` en entrée, M[S', a] = 4 : `S' → TS'`. C'est la **concaténation** de `(a+b)*` avec `a`.
@@ -637,7 +637,7 @@ $R'S                          )$                            ERREUR!!
 Mot inconnu : a+)
 ```
 
- **Diagnostic** : M[S, )] = −1. Après `+`, on attend le début d'un `S`, donc un symbole de PREMIER(S) = { (, a, b }. La parenthèse `)` n'en fait pas partie.
+**Diagnostic** : M[S, )] = −1. Après `+`, on attend le début d'un `S`, donc un symbole de PREMIER(S) = { (, a, b }. La parenthèse `)` n'en fait pas partie.
 
 ### Exemple 3 : `()`, un mot rejeté avec des parenthèses vides
 
@@ -646,7 +646,7 @@ $R'S'T')R(                    ()$
 $R'S'T')R                     )$                            ERREUR!!
 ```
 
- **Diagnostic** : M[R, )] = −1. La grammaire **interdit l'expression vide** : `R` ne peut pas dériver ε.
+**Diagnostic** : M[R, )] = −1. La grammaire **interdit l'expression vide** : `R` ne peut pas dériver ε.
 
 ### Tableau de tests
 
@@ -760,7 +760,7 @@ Le dossier `NTP5` est une **réécriture corrigée** de la version d'origine `TP
 ## 11. Exercices corrigés
 
 <details>
-<summary><b> Exercice 1 : éliminer la récursivité à gauche de <code>E → E + T | E − T | T</code></b></summary>
+<summary><b>Exercice 1 : éliminer la récursivité à gauche de <code>E → E + T | E − T | T</code></b></summary>
 
 <br/>
 
@@ -774,7 +774,7 @@ E' → + T E'  |  − T E'  |  ε
 </details>
 
 <details>
-<summary><b> Exercice 2 : calculer PREMIER et SUIVANT pour la grammaire arithmétique classique</b></summary>
+<summary><b>Exercice 2 : calculer PREMIER et SUIVANT pour la grammaire arithmétique classique</b></summary>
 
 <br/>
 
@@ -792,12 +792,12 @@ F → ( E ) | id
 </details>
 
 <details>
-<summary><b> Exercice 3 : cette grammaire est-elle LL(1) ? <code>S → a S b | a b</code></b></summary>
+<summary><b>Exercice 3 : cette grammaire est-elle LL(1) ? <code>S → a S b | a b</code></b></summary>
 
 <br/>
 
- **Non** : PREMIER(aSb) ∩ PREMIER(ab) = {a}, donc M[S, a] contient deux règles.
- **Après factorisation à gauche** :
+**Non** : PREMIER(aSb) ∩ PREMIER(ab) = {a}, donc M[S, a] contient deux règles.
+**Après factorisation à gauche** :
 
 ```
 S  → a S'
@@ -809,7 +809,7 @@ PREMIER(Sb) = {a} et PREMIER(b) = {b} sont disjoints : la grammaire devient LL(1
 </details>
 
 <details>
-<summary><b> Exercice 4 : simuler l'analyse de <code>ba*</code> à la main</b></summary>
+<summary><b>Exercice 4 : simuler l'analyse de <code>ba*</code> à la main</b></summary>
 
 <br/>
 
@@ -837,7 +837,7 @@ L'étoile s'applique **seulement à `a`** : `b(a*)`.
 </details>
 
 <details>
-<summary><b> Exercice 5 : ajouter le mot vide <code>ε</code> (symbole <code>e</code>) au langage</b></summary>
+<summary><b>Exercice 5 : ajouter le mot vide <code>ε</code> (symbole <code>e</code>) au langage</b></summary>
 
 <br/>
 
@@ -849,7 +849,7 @@ L'étoile s'applique **seulement à `a`** : `b(a*)`.
 </details>
 
 <details>
-<summary><b> Exercice 6 (défi) : remplacer la table par une descente récursive</b></summary>
+<summary><b>Exercice 6 (défi) : remplacer la table par une descente récursive</b></summary>
 
 <br/>
 
@@ -938,7 +938,7 @@ flowchart LR
 ## FAQ
 
 <details>
-<summary><b>Pourquoi le programme affiche-t-il <code>$</code> à la fin de l'entrée?</b></summary>
+<summary><b>Pourquoi le programme affiche-t-il <code>$</code> à la fin de l'entrée ?</b></summary>
 <br/>
 Le <code>$</code> est ajouté par <code>main.c</code> (<code>strcat(ss, "$")</code>). Il permet à l'analyseur de savoir que le mot est terminé et d'appliquer les règles ε grâce aux ensembles SUIVANT, qui contiennent <code>$</code>.
 </details>
@@ -950,19 +950,19 @@ Ce sont les étapes de <b>consommation</b> : le sommet de pile est un terminal �
 </details>
 
 <details>
-<summary><b>Pourquoi les espaces sont-ils ignorés?</b></summary>
+<summary><b>Pourquoi les espaces sont-ils ignorés ?</b></summary>
 <br/>
-<code>main.c</code> les filtre pendant la saisie (<code>if (c!= ' ')</code>). Ils ne font pas partie de l'alphabet. Ce filtrage est une forme très simple d'analyse lexicale.
+<code>main.c</code> les filtre pendant la saisie (<code>if (c != ' ')</code>). Ils ne font pas partie de l'alphabet. Ce filtrage est une forme très simple d'analyse lexicale.
 </details>
 
 <details>
-<summary><b>Les deux règles 3 (<code>S → TS'</code>) et 4 (<code>S' → TS'</code>) ont la même partie droite : est-ce une erreur?</b></summary>
+<summary><b>Les deux règles 3 (<code>S → TS'</code>) et 4 (<code>S' → TS'</code>) ont la même partie droite : est-ce une erreur ?</b></summary>
 <br/>
 Non. Leurs parties gauches sont différentes (<code>S</code> et <code>S'</code>). Comme le tableau <code>derivation</code> ne stocke que les parties droites, les deux lignes sont identiques. Le programme affiche la bonne partie gauche, car il la lit dans la pile.
 </details>
 
 <details>
-<summary><b>Le programme gère-t-il les mots très longs?</b></summary>
+<summary><b>Le programme gère-t-il les mots très longs ?</b></summary>
 <br/>
 Dans <code>NTP5</code>, la saisie est limitée à 98 caractères (<code>MAX_MOT</code>) ; les caractères suivants sont ignorés. L'alignement des colonnes est prévu pour des mots et des piles d'environ 30 caractères.
 </details>
